@@ -92,23 +92,16 @@ fi
 /bin/systemctl -a --no-pager  --no-legend  --type=service | grep -E $SERVICES_TO_CHECK > /tmp/pmg_services.txt
 
 # Statistics on the number of failed services
-serv_not_running=`grep -e 'failed\|dead\|exited' /tmp/pmg_services.txt`
-number_serv_failed=`echo $serv_not_running | wc -l`
-
-if [ "$number_serv_failed" == "0" ]
+serv_not_running=`grep -E 'failed|dead|exited' /tmp/pmg_services.txt`
+if [[ -z "$serv_not_running" ]]
 then
-
         getmsg="All services are up and running"
         echo $getmsg$getresult2
         exit $STATE_OK
-
 else
-
         getmsg="Some services are not running: "
-        #getresult=`cat /tmp/pmg_services.txt | awk '{print "("$4")",$5,$6,$7,$8,$10,$11,$12}' | grep -e 'failed\|dead\|exited'`
-	getresult=`echo $serv_not_running | awk '{print "SERVICE:"$1,"("$5,$6,$7,$8")","STATE:"$4}'`
+        getresult=`grep -E 'failed|dead|exited' /tmp/pmg_services.txt | awk '{print "[SERVICE:"$1,"("$5,$6,$7,$8")","STATE:"$4"]"}'`
         getresult2=`echo $getresult | tr "\n\r" " - "`
         echo $getmsg$getresult2
-        exit $STATE_PROBLEM
-
+        exit $STATE_PROBLEM	
 fi
