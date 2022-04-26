@@ -1,4 +1,7 @@
 # check_pmg_services
+
+Forked from https://github.com/jasoncheng7115/check_pmg_services
+
   
 Proxmox MG 服務檢查，支援 Nagios/LibreNMS/Icinga2。  
 主要寫給 LibreNMS 使用，以 check_nrpe 進行 Proxmox MG 重要服務檢查。    
